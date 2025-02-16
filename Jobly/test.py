@@ -9,7 +9,7 @@ location = "United States"  # Job location
 start = 0  # Starting point for pagination
 
 # Construct the URL for LinkedIn job search
-list_url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={title}&location={location}&start={start}"
+list_url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={title}&location={location}&f_TPR=r604800&f_E=2,3,4&f_WT=2&start={start}"
 
 # Send a GET request to the URL and store the response
 response = requests.get(list_url)
