@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import random
 import time
 import pandas as pd
+import json
+
 
 print("Running.....")
 # Job search parameters
@@ -18,8 +20,9 @@ increment = 25  # LinkedIn paginates in multiples of 25
 headers_list = [
     {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"},
     {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"},
+    {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0"},
+    {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:89.0) Gecko/20100101 Firefox/89.0"},
 ]
-
 # List to store job IDs
 id_list = []
 
@@ -93,16 +96,32 @@ for job_id in id_list:
         job_post["num_applicants"] = job_soup.find("span", {"class": "num-applicants__caption"}).text.strip()
     except:
         job_post["num_applicants"] = None
-
+        # Extract job description
+    try:
+        description_div = job_soup.find("div", {"class": "description__text description__text--rich"})
+        job_post["description"] = description_div.text.strip() if description_div else None
+    except:
+        job_post["description"] = None
+    job_post["Job-Id"] = job_id
+    
+    '''
     # Avoid duplicate company listings
     if job_post["company_name"] and job_post["company_name"] not in companies_seen:
         companies_seen.add(job_post["company_name"])
-        job_list.append(job_post)
-
+        '''
+    job_list.append(job_post)
+        
+    
     # Sleep between requests
     time.sleep(random.uniform(2, 4))
 
 # Print results
 print(f"Total jobs scraped: {len(job_list)}")
 print(job_list)
+
+ # Save to JSON file
+with open("jobs2.json", "w") as f:
+    json.dump(job_list, f, indent=2)
+
+print("Job data saved to jobs.json")
 
