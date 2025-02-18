@@ -11,9 +11,9 @@ print("Running.....")
 #titles = ["Software Engineering Intern", "Software Developer Intern", "Backend Developer Intern", "Full Stack Intern"]
 #locations = ["New York, NY", "San Francisco, CA", "Seattle, WA", "Boston, MA", "Austin, TX"]
 
-titles = ["Software Engineering Intern"]
+titles = ["Software Engineering Intern", "Software Development Intern"]
 locations = ["United States"]
-total_jobs = 200  # Maximum number of jobs to fetch
+total_jobs = 600  # Maximum number of jobs to fetch
 increment = 25  # LinkedIn paginates in multiples of 25
 
 # User-Agent rotation
@@ -27,10 +27,11 @@ headers_list = [
 id_list = []
 
 # Fetch job postings
+print("Looking for jobs! ....")
 for title in titles:
     for location in locations:
         for start in range(0, total_jobs, increment):
-            print("First for loop")
+            print(".")
             list_url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={title}&location={location}&start={start}"
             headers = random.choice(headers_list)
             response = requests.get(list_url, headers=headers)
